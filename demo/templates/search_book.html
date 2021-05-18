@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<title>{% block title %}检索界面{% endblock %}</title>
+<style>
+    body,div { margin:0; border:0 }
+    .logo          { font-size:55px; background-color:#4682B4; height:80px;  color:#fff; text-align:center }
+    .context_title { font-size:20px; background-color:#F0F8FF; height:50px; text-align:left }
+    .context       { font-size:15px; background-color:#F0F8FF; height:580px; text-align:left }
+    .foot          { font-size:18px; background-color:#4682B4; height:25px;  color:#fff; text-align:center }
+</style>
+</head>
+
+<body>
+<div class="logo">{% block logo %}LOGO{% endblock %}</div>
+<div class="context_title">{% block context_title %}请于下方输入搜索的类别{% endblock %}
+<p></p>
+<div class="context">{% block context %}
+<form action="" method="post">
+    {% csrf_token %}
+    书名：<input type="text" name="q"> <!--"text"为文本框，"q"为接收的信息-->
+    类别：<select  name="type">
+        <option></option>
+        <option>小说</opiton>
+        <option>教育</opiton></select>
+    <input type="submit" value="搜索">       <!--"submit"为提交，"value"为按钮的信息-->
+</form>
+<p>
+    {% for item in book %}  
+    <li> {{forloop.counter}}.{{item.title}} </li>  
+    {% empty %} 
+    没有数据
+    {% endfor %}
+</p>
+{% endblock %}</div>
+
+<div class="foot">{% block foot %}友情链接 版权声明{% endblock %}</div>
+</body>
+
+</html>
