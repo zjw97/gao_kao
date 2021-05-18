@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     #'文件夹名.文件名.函数名'
-    'books.apps.BooksConfig', #图书模块
     'gaokao.apps.GaokaoConfig', # 高考数据库模块
 ]
 

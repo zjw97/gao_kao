@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<title>{% block title %}检索界面{% endblock %}</title>
+<style>
+    body,div { margin:0; border:0 }
+    .logo          { font-size:55px; background-color:#4682B4; height:80px;  color:#fff; text-align:center }
+    .context_title { font-size:20px; background-color:#F0F8FF; height:50px; text-align:left }
+    .context       { font-size:15px; background-color:#F0F8FF; height:800px; text-align:left }
+    .foot          { font-size:18px; background-color:#4682B4; height:25px;  color:#fff; text-align:center }
+</style>
+</head>
+
+<body>
+<div class="logo">{% block logo %}LOGO{% endblock %}</div>
+<div class="context_title">{% block context_title %}请于下方输入搜索的内容{% endblock %}
+<p></p>
+
+<div class="context">{% block context %}
+<form action="" method="post">
+    {% csrf_token %}
+    学校：<input type="text" name="q">
+    <p>专业：<input type="text" name="p"></p>
+    <p>分数：<input type="text" name="m"></p>
+    <p>位次：<input type="text" name="n"></p>
+    <p>地区：<select  name="region"></p>
+        <option></option>
+        <option>安徽</opiton>
+        <option>澳门</opiton>
+        <option>北京</opiton>
+        <option>重庆</opiton>
+        <option>福建</opiton>
+        <option>甘肃</opiton>
+        <option>广东</opiton>
+        <option>广西</opiton>
+        <option>贵州</opiton>
+        <option>海南</opiton>
+        <option>河北</opiton>
+        <option>河南</opiton>
+        <option>黑龙江</opiton>
+        <option>湖北</opiton>
+        <option>湖南</opiton>
+        <option>吉林</opiton>
+        <option>江苏</opiton>
+        <option>江西</opiton>
+        <option>辽宁</opiton>
+        <option>内蒙古</opiton>
+        <option>宁夏</opiton>
+        <option>青海</opiton>
+        <option>山东</opiton>
+        <option>山西</opiton>
+        <option>陕西</opiton>
+        <option>上海</opiton>
+        <option>四川</opiton>
+        <option>台湾</opiton>
+        <option>天津</opiton>
+        <option>西藏</opiton>
+        <option>香港</opiton>
+        <option>新疆</opiton>
+        <option>云南</opiton>
+        <option>浙江</opiton></select></p>
+    <p>类型：<input type="radio" name="type" checked>普通
+            <input type="radio" name="type">体育
+            <input type="radio" name="type">艺术</p>
+    <p>层次：<select  name="level">
+        <option></option>
+        <option>第一批</opiton>
+        <option>第二批</opiton>
+        <option>第三批</opiton></select></p>
+    <p>考试科目：<input type="checkbox" name="subject" value="化学">化学
+                <input type="checkbox" name="subject" value="物理">物理
+                <input type="checkbox" name="subject" value="生物">生物
+                <input type="checkbox" name="subject" value="历史">历史
+                <input type="checkbox" name="subject" value="地理">地理
+                <input type="checkbox" name="subject" value="政治">政治</p>
+    <input type="submit" value="搜索"> 
+</form>
+
+<p>{% for item in school %}
+
+    <li> {{forloop.counter}}.{{item.school}} 专业：{{item.profess_name}} 分数线：{{item.score_line}} 位次：{{item.rank}}</li>
+    {% empty %} 
+    没有数据
+    {% endfor %}</p>
+{% endblock %}</div>
+
+<div class="foot">{% block foot %}版权声明{% endblock %}</div>
+</body>
+
+</html>

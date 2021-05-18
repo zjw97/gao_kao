@@ -19,5 +19,5 @@ from django.views import static
 
 urlpatterns = [
     re_path(r'media/(?P<path>.*)$', static.serve, {"document_root":settings.MEDIA_ROOT}),
-    path('', include('books.urls')), #books子应用的导入
+    path('', include('gaokao.urls')), #books子应用的导入
 ]
