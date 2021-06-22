@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-rqaqjv+svx-f95cr#n@tib&p)t2h0!&%8#io6#0s1*hd$(%f@d
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True #调试开关，开启时显示输出信息，False时不再对外输出日志和提示信息，也不再提供静态文件的访问
 
-ALLOWED_HOSTS = [] #访问后端的域名列表，可以用通配符*
+ALLOWED_HOSTS = '*' #访问后端的域名列表，可以用通配符*
 
 
 # Application definition

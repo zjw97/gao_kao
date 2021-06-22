@@ -103,7 +103,7 @@
 <!--标题栏-->
 <div class="header">
     {% block header %}
-        高考志愿填报信息可视化系统   <a href="http://127.0.0.1:8000/logout/"> <img style='position:absolute;right:20px;top:10px'
+        高考志愿填报信息可视化系统   <a href="/logout/"> <img style='position:absolute;right:20px;top:10px'
             src={% static "logout.png" %} right:30 width=40px height=40px/></a>
     {% endblock %}
 
@@ -174,11 +174,11 @@
         <input type="checkbox" name="s4" value="历史" onClick="doCheck(this)">历史
         <input type="checkbox" name="s5" value="地理" onClick="doCheck(this)">地理
         <input type="checkbox" name="s6" value="政治" onClick="doCheck(this)">政治</p>
-    <input type="submit" value="搜索"><input type="checkbox" name="draw" value="T">可视化
+    <input type="submit" value="搜索">
     <p>
 
         <img id="button" src={% static "button.png" %} alt="" width="200" height="50">
-        <img id="Img" src={% static "fig.png" %} alt="统计结果" width="0" height="0">
+        <img id="Img" src={{img}} alt="统计结果" width="0" height="0">
 
         <div id="myModal" class="modal">
             <!-- 关闭按钮 -->

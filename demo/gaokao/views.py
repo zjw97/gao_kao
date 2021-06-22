@@ -11,7 +11,8 @@ from PIL import Image
 import numpy as np
 from tkinter import messagebox
 import tkinter
-import functools
+from io import BytesIO
+import base64
 
 
 
@@ -26,7 +27,6 @@ def filter_schools(request):
     conditional = {}
     # 获取用户提供的学校名称关键字
     db = databases[request.POST["type"]]
-    db.objects.filter(psubject__exact="").update(psubject="不提科目要求")
     school = request.POST.get("school")
     if school:
         conditional['pschool__contains'] = school
@@ -110,20 +110,18 @@ def search_school(request):
     if request.method == "GET":
         return render(request, "search_school.html")
     elif request.method == "POST":
-        # request.COOKIES.
+
         # 获取所有的汇总信息并且得到筛选结果
         schools, last_search_para = filter_schools(request)
 
-        draw = request.POST.get("draw")
-        if draw:
-            visualizeP(schools)
+        img_data = visualizeP(schools)
+        data["img"] = img_data
 
         year = request.POST.get("year")
         if year:
             schools = schools.filter(pyear__exact=year)
         # table_list = ch_to_list(schools)
         data["school"] = schools #将变量全部放入data
-        # data.update(last_search_para)
 
         return render(request, "search_school.html", data)  #传递给search_book.html
 
@@ -169,8 +167,15 @@ def visualizeP(schools):
     plt.xlabel("年份")
     plt.ylabel("分数")
     plt.gca().xaxis.set_major_locator(MaxNLocator(integer=True)) #坐标轴整数显示
-    plt.savefig("D:/研一/上课PPT/软件工程/结对项目/gao_kao/demo/static/fig.png", bbox_inches="tight", dpi=fig.dpi, pad_inches=0.2) #保存图像
+    buffer = BytesIO()
+    plt.savefig(buffer, bbox_inches="tight", dpi=fig.dpi, pad_inches=0.2) #保存图像
+    plot_data = buffer.getvalue()
+    imb = base64.b64encode(plot_data) # 对plot_data进行编码
+    ims = imb.decode()
+    imgd = "data:image/png;base64," + ims
     plt.close()
+
+    return imgd
 
 # 无法绘图时
 def warning():
