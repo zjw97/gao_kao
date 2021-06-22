@@ -1,10 +1,7 @@
 from django.shortcuts import render, redirect, reverse
-from login import models
 from login.forms import RegisterForm, LoginForm
 from django.contrib.auth import authenticate, login, logout
 from login.models import User
-from django.contrib.auth.hashers import check_password
-from django.http import JsonResponse
 # Create your views here.
 
 def index(request):
@@ -47,7 +44,6 @@ def register(request):
         else:
             # import pdb
             # pdb.set_trace()
-            print(user_register_form.errors)
             return render(request, "register.html", {"register_form": user_register_form})
 
 def log_out(request):

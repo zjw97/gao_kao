@@ -1,11 +1,8 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.shortcuts import render
 from gaokao.models import ProfessInformation, SportsInformation, ArtInformation
-from gaokao.forms  import InputForm
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 import matplotlib.pyplot as plt
-import matplotlib.image as mpig
 from matplotlib.ticker import MaxNLocator
 from PIL import Image
 import numpy as np
@@ -120,10 +117,10 @@ def search_school(request):
         year = request.POST.get("year")
         if year:
             schools = schools.filter(pyear__exact=year)
-        # table_list = ch_to_list(schools)
+
         data["school"] = schools #将变量全部放入data
 
-        return render(request, "search_school.html", data)  #传递给search_book.html
+        return render(request, "search_school.html", data)  # 传递给search_book.html
 
 # 可视化
 def visualizeP(schools):
