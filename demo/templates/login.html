@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录页面</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background-color: rgb(235, 235, 235);
+        }
+        form {
+            width: 20%;
+            height: 40%;
+            background-color: white;
+            padding: 20px;
+            box-sizing: border-box;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            /* 相对于现在所处位置的位移变化，x便偏移自己宽度的50%，y偏移自己高度的50% */
+        }
+        h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        form input {
+            width: 100%;
+            height: 30px;
+            margin-bottom: 10px;
+            padding-left: 10px;
+            box-sizing: border-box;
+            align-content: baseline;
+            text-align: left;
+        }
+        .mya {
+            width: 100%;
+            height: 30px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .subbotton{
+            width: 100%;
+            height: 30px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <form action="" method="post">
+        <h2>用户登录</h2>
+        {% csrf_token %}
+        {{ login_form.username.errors }}
+        {{ login_form.username }}
+
+        {{ login_form.password.errors }}
+        {{ login_form.password }}
+
+
+        <a class="mya" href="http://127.0.0.1:8000/register/"><small>没有账号，点此注册</small></a>
+
+        <input class="subbotton" type="submit" value="登录">
+
+    </form>
+</body>
+
+</html>

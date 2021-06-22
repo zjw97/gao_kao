@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     #'文件夹名.文件名.函数名'
     'gaokao.apps.GaokaoConfig', # 高考数据库模块
+    'login', # 登录模块
 ]
 
 # 中间件
@@ -86,6 +87,11 @@ DATABASES = {
         'POST': 3306,
         'USER': 'root',
         'PASSWORD': '123456',
+        'TEST':{
+            "NAME": "django_db_test",
+            "CHARSET": "utf8",
+            "COLLATION": "utf8_general_ci",
+        }
     }
 }
 
@@ -129,10 +135,13 @@ USE_L10N = True
 STATIC_URL = '/static/' # 静态文件访问路径
 # 放置静态文件的文件夹
 STATICFILES_DIRS = [
-    "D:\研一\上课PPT\软件工程\结对项目\gao_kao\demo\static_files",
+    "D:\研一\上课PPT\软件工程\结对项目\gao_kao\demo\static",
 ]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = "login.User"
+LOGIN_URL = "/login/"

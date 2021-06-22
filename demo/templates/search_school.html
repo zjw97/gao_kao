@@ -5,19 +5,23 @@
 <meta charset="utf-8">
 <title>
 {% block title %}检索界面{% endblock %}</title>
+{% load static %}
 <style>
     body,div        { margin:0; border:0 }
-    .header         { font-size:50px; background-color:#4682B4; height:70px;  color:#fff; text-align:center }
-    .context        { font-size:15px; background-color:#F5F5F5; height:630px; width:500px; float:left }
-    .result         { font-size:15px; background-color:#F5F5F5; height:630px; width:1018px; float:left }
+    .header         { font-size:50px; background-color:#4682B4; height:10%;  color:#fff; text-align:center }
+    .left           { font-size:15px; background-color:#F5F5F5; height:640px; width:10px; float:left }
+    .context        { font-size:15px; background-color:#F5F5F5; height:640px; width:450px; float:left }
+    .result         { font-size:15px; background-color:#F5F5F5; height:640px; width:1059px; float:left }
     .foot           { font-size:20px; background-color:#4682B4; height:30px;  color:#fff; clear:both; text-align:center }
+
     table.hovertable{
         font-family: verdana,arial,sans-serif;
-        font-size: 13px;
+        font-size: 10px;
         color: #333333;
         border-width: 1px;
         border-color: #999999;
         border-collapse: collapse;
+
         }
     table.hovertable th{
         background-color: #DCDCDC;
@@ -31,78 +35,158 @@
         }
     table.hovertable td{
         border-width: 1px;
-        padding: 10px;
+        padding: 5px;
         border-style: solid;
         border-color: #999999;
+    }
+    /* 弹窗背景 */
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        padding-top: 50px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgba(0,0,0,0.2); /* Black w/ opacity */
+    }
+    /* 图片 */
+    .modal-content {
+        margin: auto;
+        display: block;
+        width: 100%;
+        max-width: 1000px;
+    }
+    /* 添加动画 */
+    .modal-content, #caption {
+        -webkit-animation-name: zoom;
+        -webkit-animation-duration: 0.6s;
+        animation-name: zoom;
+        animation-duration: 0.6s;
+    }
+    @-webkit-keyframes zoom {
+        from {-webkit-transform:scale(0)}
+        to {-webkit-transform:scale(1)}
+    }
+    @keyframes zoom {
+        from {transform:scale(0)}
+        to {transform:scale(1)}
+    }
+    /* 关闭按钮 */
+    .close {
+        position: absolute;
+        top: 15px;
+        right: 35px;
+        color: #f1f1f1;
+        font-size: 40px;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+    .close:hover,
+    .close:focus {
+        color: #bbb;
+        text-decoration: none;
+        cursor: pointer;
+    }
+   /* 小屏幕中图片宽度为 100% */
+    @media only screen and (max-width: 700px){
+        .modal-content {
+            width: 100%;
+        }
     }
 </style>
 </head>
 
 <body>
 <!--标题栏-->
-<div class="header">{% block header %}高考志愿填报信息可视化系统{% endblock %}</div>
+<div class="header">
+    {% block header %}
+        高考志愿填报信息可视化系统   <a href="http://127.0.0.1:8000/logout/"> <img style='position:absolute;right:20px;top:10px'
+            src={% static "logout.png" %} right:30 width=40px height=40px/></a>
+    {% endblock %}
 
+</div>
+<div class="left">{% block left %}{% endblock %}</div>
 <!--检索栏-->
 <div class="context">
 {% block context %}
-<form action="" method="post">
+<form action="/search_school/" method="post"  onsubmit="return check(this)">
     {% csrf_token %}
     <p>请输入需要搜索的信息</p>
+    <p>类型：<input type="radio" name="type" value="putong" checked>普通
+        <input type="radio" name="type" value="tiyu">体育
+        <input type="radio" name="type" value="yishu">艺术</p>
     <p>学校：<input type="text" name="school"></p>
     <p>专业：<input type="text" name="profession"></p>
-    <p>分数：<input type="text" name="lscore" style="width:30px">-<input type="text" name="hscore" style="width:30px"></p>
-    <p>位次：<input type="text" name="lrank" style="width:30px">-<input type="text" name="hrank" style="width:30px"></p>
-    <p>地区：<select  name="region"></p>
-        <option></option>
-        <option>安徽</opiton>
-        <option>澳门</opiton>
-        <option>北京</opiton>
-        <option>重庆</opiton>
-        <option>福建</opiton>
-        <option>甘肃</opiton>
-        <option>广东</opiton>
-        <option>广西</opiton>
-        <option>贵州</opiton>
-        <option>海南</opiton>
-        <option>河北</opiton>
-        <option>河南</opiton>
-        <option>黑龙江</opiton>
-        <option>湖北</opiton>
-        <option>湖南</opiton>
-        <option>吉林</opiton>
-        <option>江苏</opiton>
-        <option>江西</opiton>
-        <option>辽宁</opiton>
-        <option>内蒙古</opiton>
-        <option>宁夏</opiton>
-        <option>青海</opiton>
-        <option>山东</opiton>
-        <option>山西</opiton>
-        <option>陕西</opiton>
-        <option>上海</opiton>
-        <option>四川</opiton>
-        <option>台湾</opiton>
-        <option>天津</opiton>
-        <option>西藏</opiton>
-        <option>香港</opiton>
-        <option>新疆</opiton>
-        <option>云南</opiton>
-        <option>浙江</opiton></select></p>
-    <p>类型：<input type="radio" name="type" checked>普通
-        <input type="radio" name="type">体育
-        <input type="radio" name="type">艺术</p>
+    <p>分数：<input type="number" name="lscore" style="width:60px">-<input type="number" name="hscore" style="width:60px"></p>
+    <p>位次：<input type="number" name="lrank" style="width:60px">-<input type="number" name="hrank" style="width:60px"></p>
+    <p>年份：<select name="year">
+        <option selected> </option>
+        <option value="20">2020</option>
+        <option value="19">2019</option>
+        <option value="18">2018</option>
+    </select></p>
+    <p>地区：<select  name="region">
+        <option value="安徽">安徽</option>
+        <option>澳门</option>
+        <option>北京</option>
+        <option>重庆</option>
+        <option>福建</option>
+        <option>甘肃</option>
+        <option>广东</option>
+        <option>广西</option>
+        <option>贵州</option>
+        <option>海南</option>
+        <option>河北</option>
+        <option>河南</option>
+        <option>黑龙江</option>
+        <option>湖北</option>
+        <option>湖南</option>
+        <option>吉林</option>
+        <option>江苏</option>
+        <option>江西</option>
+        <option>辽宁</option>
+        <option>内蒙古</option>
+        <option>宁夏</option>
+        <option>青海</option>
+        <option>山东</option>
+        <option>山西</option>
+        <option>陕西</option>
+        <option>上海</option>
+        <option>四川</option>
+        <option>台湾</option>
+        <option>天津</option>
+        <option>西藏</option>
+        <option>香港</option>
+        <option>新疆</option>
+        <option>云南</option>
+        <option selected>浙江</option></select></p>
     <p>层次：<select  name="level">
         <option></option>
-        <option>第一批</opiton>
-        <option>第二批</opiton>
-        <option>第三批</opiton></select></p>
-    <p>考试科目：<input type="checkbox" name="subject" value="化学">化学
-        <input type="checkbox" name="subject" value="物理">物理
-        <input type="checkbox" name="subject" value="生物">生物
-        <input type="checkbox" name="subject" value="历史">历史
-        <input type="checkbox" name="subject" value="地理">地理
-        <input type="checkbox" name="subject" value="政治">政治</p>
-    <input type="submit" value="搜索"> 
+        <option selected>第一批</option>
+        <option>第二批</option>
+        <option>第三批</option></select></p>
+    <p>考试科目：<input type="checkbox" name="s1" value="化学" checked onClick="doCheck(this)">化学
+        <input type="checkbox" name="s2" value="物理" checked onClick="doCheck(this)">物理
+        <input type="checkbox" name="s3" value="生物" checked onClick="doCheck(this)">生物
+        <input type="checkbox" name="s4" value="历史" onClick="doCheck(this)">历史
+        <input type="checkbox" name="s5" value="地理" onClick="doCheck(this)">地理
+        <input type="checkbox" name="s6" value="政治" onClick="doCheck(this)">政治</p>
+    <input type="submit" value="搜索"><input type="checkbox" name="draw" value="T">可视化
+    <p>
+
+        <img id="button" src={% static "button.png" %} alt="" width="200" height="50">
+        <img id="Img" src={% static "fig.png" %} alt="统计结果" width="0" height="0">
+
+        <div id="myModal" class="modal">
+            <!-- 关闭按钮 -->
+            <span class="close" onclick="document.getElementById('myModal').style.display='none'">&times;</span>
+            <!-- 弹窗内容 -->
+            <img class="modal-content" id="img01" >
+        </div>
+    </p>
 </form>
 {% endblock %}</div>
 
@@ -111,22 +195,28 @@
 {% block result %}
 <span id="spanFirstt">第一页</span> <span id="spanPret">上一页</span> <span id="spanNextt">下一页</span> <span id="spanLastt">最后一页</span> 第<span id="spanPageNumt"></span>页/共<span id="spanTotalPaget"></span>页   
 <table class="hovertable">
-    <tr align="center">
+    <tr align="center" >
         <th width="30">序号</th>
-        <th width="100">学校</th>
-        <th width="100">专业</th>
+        <th width="30">地区</th>
+        <th width="200">学校</th>
+        <th width="200">专业</th>
+        <th width="200">科目要求</th>
+        <th width="50">招生数</th>
         <th width="50">分数线</th>
-        <th width="100">位次</th>
-        <th width="100">备注</th></tr>
+        <th width="70">位次</th>
+        <th width="50">年份</th></tr>
     <tbody id="tablelsw"> 
     {% for item in school %}
         <tr align="center" onmouseover="this.style.backgroundColor='#DCDCDC';" onmouseout="this.style.backgroundColor='#F5F5F5';">
-        <td> {{forloop.counter}}  </td>
-        <td> {{item.school}}      </td>
-        <td> {{item.profess_name}}</td> 
-        <td> {{item.score_line}}  </td>
-        <td> {{item.rank}}        </td>
-        <td> {{item.remark}}}     </td></tr>
+        <td > {{forloop.counter}}  </td>
+        <td> {{item.parea  }}      </td>
+        <td> {{item.pschool}}      </td>
+        <td> {{item.pprofess_name}}</td>
+        <td> {{item.psubject}}     </td>
+        <td> {{item.pplan_num }}   </td>
+        <td> {{item.pscore_line}}  </td>
+        <td> {{item.prank}}        </td>
+        <td> {{item.pyear }}       </td></tr>
     {% endfor %}
 </tbody>  
 </table>
@@ -142,7 +232,7 @@
 </body>
 </html>
 
-<!--表格分页-->>
+<!--表格分页-->
 <script>    
     var theTable = document.getElementById("tablelsw");   
     var totalPage = document.getElementById("spanTotalPage");   
@@ -158,7 +248,7 @@
     var spanFirstt = document.getElementById("spanFirstt");   
     var spanLastt = document.getElementById("spanLastt");   
     var numberRowsInTable = theTable.rows.length;   
-    var pageSize = 15;   
+    var pageSize = 20;
     var page = 1;   
     //下一页   
     function next(){   
@@ -272,4 +362,78 @@
     window.onload=function(){
         altRows('alternatecolor');
     }
+</script>
+
+<script>
+//选项前缀
+var sCtrlPrefix = "s";
+//选项总个数
+var iMaxCheckbox = 6;
+//最大选择数
+var iMaxSelected = 3;
+function doCheck(ctrl) {
+    var iNumChecked = 0;
+    var thisCtrl;
+    var i;
+    i = 1;
+    while ((i <= iMaxCheckbox) && (iNumChecked <= iMaxSelected)) {
+        thisCtrl = eval("ctrl.form." + sCtrlPrefix + i);
+        if ((thisCtrl != ctrl) && (thisCtrl.checked)) {
+            iNumChecked++;
+        }
+        i++;
+    }
+    if (iNumChecked == iMaxSelected) {
+        ctrl.checked = false;
+    }
+}
+</script>
+
+<script>
+// 获取弹窗
+var modal = document.getElementById('myModal');
+// 获取图片插入到弹窗
+var button = document.getElementById('button');
+var img = document.getElementById('Img');
+var modalImg = document.getElementById("img01");
+var captionText = document.getElementById("caption");
+button.onclick = function(){
+    modal.style.display = "block";
+    modalImg.src = img.src;
+}
+// 获取 <span> 元素，设置关闭按钮
+var span = document.getElementsByClassName("close")[0];
+// 当点击 (x), 关闭弹窗
+span.onclick = function() {
+  modal.style.display = "none";
+}
+</script>
+
+<script language="JavaScript">
+    //声明全局数组，用于存放取值
+    var inputArr = document.getElementsByTagName("input");
+    function check(o)
+    {
+        var nameStr = "";
+        for (var i = 0; i < inputArr.length-1; i++)
+        {
+            nameStr += inputArr[i].value + ";";
+        }
+        nameStr += inputArr[inputArr.length - 1];
+        window.name = nameStr;
+    }
+    if (window.name)
+    {
+        //声明数组，用于存放从window.name中分离出的值
+        var nameArr = new Array();
+        nameArr = window.name.split(";");
+        for (var i = 0; i < nameArr.length; i++)
+        {
+            if (inputArr[i].type == "text")
+            {
+                inputArr[i].value = nameArr[i];
+            }
+        }
+    }
+
 </script>
